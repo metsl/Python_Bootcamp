@@ -1,34 +1,25 @@
 import re
 
-file: str = input("enter filename:")
-pattern: str = input("enter text to be searched:")
 
-
-class InputOutput:
-
-    def in_data():
-        """""
-        input data from file
-        """
-        data = open(file, "r")
-        result = ""
-        for line in data:
-            if re.match(f"(.+) {pattern} (.+)", line):
-                result = result + line
-        return result
-
+class Input:
     def __init__(self, file, pattern):
         self.file = file
         self.pattern = pattern
 
-    # asking user for inputting any of 3 options: underscoring, highlighting and generate machine readable output
-    print("Available output options:\nEnter -u ( --underscore )\nEnter -c ( --color highlighting )\nEnter -m ( "
-          "--machine readable output \nEnter -x for standard output")
+    def in_data(self):
+        """""
+        input data from the file
+        """
+        data = open(self.file, "r")
+        result = ""
+        for line in data:
+            if re.match(f"(.+) {self.pattern} (.+)", line):
+                result = result + line
+        return result
 
     # print("{:s}\n{:s}\n".format(result, len(result) * "^"))   #underlines with ^ the whole line.
 
-    def get_output_option(self, pattern, result):
-
+    def get_output_option(self):
         """""
         underlining matching text (not with ^) on -u
         Highlighting matching text on -c
@@ -38,29 +29,39 @@ class InputOutput:
         choice = input("Enter -u ( -- for underscore )\nEnter -c ( --color highlighting )\nEnter -m ( --machine "
                        "readable output \nEnter -x for standard output")
         if choice == 'u':
-            formattedtext = []
+            formatted_text = []
             for t in result.lower().split():
-                if t == pattern:
-                    formattedtext.append("\\033[4m" + t + "\033[0m")
+                if t == self.pattern:
+                    formatted_text.append("\\033[4m" + t + "\033[0m")
                 else:
-                    formattedtext.append(t)
+                    formatted_text.append(t)
 
-            print(" ".join(formattedtext))
+            return " ".join(formatted_text)
 
         elif choice == 'c':
-            formattedtext  = []
+            formatted_text = []
             for t in result.lower().split():
-                if t == pattern:
-                    formattedtext.append("\033[92m" + t + "\033[0m")
+                if t == self.pattern:
+                    formatted_text.append("\033[92m" + t + "\033[0m")
                 else:
-                    formattedtext.append(t)
+                    formatted_text.append(t)
 
-            print(" ".join(formattedtext))
+            return " ".join(formatted_text)
         # print( "\033[92m {}\033[00m" .format(line))  #highlights the whole line, not pattern
 
         elif choice == 'm':
             pass  # machine readable input
 
         elif choice == 'x':
-            print(result)
-        return 0
+            return result
+
+
+def get_data():
+    file: str = input("enter filename:")
+    pattern: str = input("enter text to be searched:")
+    return file, pattern
+
+# ??????
+i = input()
+if __name__ == '__main__':
+    get_data()
